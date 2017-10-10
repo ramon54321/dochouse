@@ -1,0 +1,13 @@
+extends ../layout
+
+block theme
+	link(rel='stylesheet', href='/stylesheets/style_theme_basic.css')
+
+block content
+	h1 #{title}
+	p Welcome to Plang's documentation.
+	p Plang is a specification for pseudo code. The idea is to standardize pseudo code to a set of very strict rules. This will ensure algorithms and logic patterns can be created in a simple, easy to read and understand language, which abstracts away the intricacies of runnable languages, but still conforms to a norm, meaning you know what to expect when you ask for a #[a(href='/plang').inlineLink plang] file.
+	.codeblock
+		| function (level) {
+		| 	increase(4);
+		| }

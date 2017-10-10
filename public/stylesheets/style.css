@@ -1,0 +1,98 @@
+body {
+  font: 16px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  line-height: 1.5;
+  color: #515151;
+  padding: 0;
+  margin: 0;
+  border-width: 0;
+}
+
+h1, h2, h3, h4, h5 {
+	color: #313131;
+}
+
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
+.navContainer {
+	width: 250px;
+	height: 100%;
+	position: fixed;
+	background-color: rgb(28, 28, 28);
+	overflow-y: scroll;
+	overflow-x: hidden;
+}
+.navContainer::-webkit-scrollbar {
+    width: 0px;
+    background: transparent;
+}
+
+.navLogoBlock {
+	width: 100%;
+	height: 140px;
+	background-image: url("../images/logo.png");
+	background-color: rgb(71, 143, 201);
+}
+
+.navHeading {
+	width:100%;
+	height: 3em;
+	line-height: 1em;
+	font-style: normal;
+	font-weight: normal;
+	padding: 0.5em;
+	padding-top: 1em;
+	color: rgb(110, 110, 110);
+	text-align: center;
+	box-sizing: border-box;
+}
+
+.navLink {
+	width: 100%;
+	height: 0.75em;
+	line-height: 0.75em;
+	font-style: normal;
+	font-weight: normal;
+	padding: 0.5em;
+	padding-left: 2em;
+	color: rgb(215, 215, 215);
+	transition: 0.4s;
+}
+.navLink:hover {
+	color: rgb(190, 62, 50);
+}
+
+.contentContainer {
+	padding: 50px;
+	padding-left: 290px;
+	max-width: 1000px;
+	margin-left: auto;
+	margin-right: auto;
+}
+
+.inlineLink {
+	color: rgb(190, 62, 50);
+	font-weight: bold;
+	text-decoration: none;
+	transition: 0.4s;
+}
+.inlineLink:hover {
+	color: rgb(71, 143, 201);
+}
+
+.codeblock {
+	width: 100%;
+	padding: 1.5em;
+	padding-left: 3em;
+	padding-right: 3em;
+	box-sizing: border-box;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	font-family: monospace;
+	background-color: rgb(231, 231, 231);
+	border: solid 1px rgb(199, 199, 199);
+	white-space: pre;
+	color: #696969;
+}

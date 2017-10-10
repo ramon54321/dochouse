@@ -1,0 +1,25 @@
+doctype html
+
+html
+	head
+		title= title
+		link(rel='stylesheet', href='/stylesheets/style.css')
+		block theme
+
+	body
+		.navContainer
+			.navLogoBlock
+			.navHeading Introduction
+			.navLink
+				a(href='/plang/index') Getting Started
+			.navLink 
+				a(href='/plang/overview') Overview
+			.navLink 
+				a(href='/plang/lexer') Lexer
+			.navLink 
+				a(href='/plang/parser') Parser
+			.navHeading Specification
+			.navLink
+				a(href='/plang/blocks') Blocks
+		.contentContainer
+			block content

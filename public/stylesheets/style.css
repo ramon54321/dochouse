@@ -79,7 +79,8 @@ a {
 	transition: 0.4s;
 }
 .inlineLink:hover {
-	color: rgb(71, 143, 201);
+	/* color: rgb(71, 143, 201); */
+	text-decoration: underline;
 }
 
 .codeblock {

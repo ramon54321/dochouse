@@ -1,0 +1,81 @@
+extends ../layout
+
+block theme
+	link(rel='stylesheet', href='/stylesheets/style_theme_basic.css')
+
+block content
+	h2 Specification - Conditionals
+	p Conditionals are a fundamental building block to logic, and for this reason plang is very strict about conditional declaration, to ensure consistency, easy reading and easy understanding.
+	p Loops also use the conditional logic block, and therefore the conditional is separated as a separate entity to help keep things consistent.
+	
+	+codeblock('Conditionals', 'Plang')
+		|IF angular_velocity LESSTHAN 100
+		|	DO Calculation
+		
+	p Do not get distracted by the #[span.codeinline  DO] keyword. It is simply a function call, which is explained in detail in the #[a(href='/plang/functions').inlineLink functions] section. The important thing to take from the example is the statement following the #[span.codeinline  IF] keyword. This statement is called the condition, and follows the same syntactical rules, regardless of the conditional type, such as #[span.codeinline  IF] or #[span.codeinline  WHILE]. It is important to understand that this statement must always result in a #[span.codeinline  TRUE] or #[span.codeinline  FALSE] outcome, which either executes the conditional body, or skips it.
+	
+	h4 Condition
+	p The condition is the statement that is evaluated to determine if the conditional body must execute or be skipped.
+	p A condition must start with a variable or a constant, followed by a comparator, which is followed by another variable or constant.
+	p Condition statements can be chained together with either #[span.codeinline  OR] or #[span.codeinline  AND].
+	
+	p.span.codeinline angular_velocity LESSTHAN 100 OR angular_velocity MORETHAN 200
+	p Plang does not permit complex chaining where and #[span.codeinline  AND] and #[span.codeinline  OR] can be mixed. Multiple statements can be chained, but they must all be chained with the same keyword. The initial reaction might be that this is limiting the power of the describable logic, but in actual fact it improves the readability considerably. The same logic can be described by nesting statements inside one another, that way the conditions are more incremental and easier to follow by reading.
+	
+	+codeblock('Nested Conditions', 'Plang')
+		|IF angular_velocity LESSTHAN 100 OR MORETHAN 200
+		|	# Cannot be between 100 and 200
+		|	IF angular_velocity LESSTHAN 500
+		|		# Cannot be between 100 and 200 or more than 500
+		|		Do Something
+	
+	p It is easy to see from this that 'Something' is only executed when 'angular_velocity' is less than 100 or if it is between 200 and 500.
+	p The entire condition statement can be negated with the #[span.codeinline  NOT] keyword. The #[span.codeinline  NOT] keyword must immediately follow the conditional type declaration. It is also important to note that the negation works on the entire statement.
+	
+	p Another form of negation is using the #[span.codeinline  UNLESS] keyword. This will clean up the code a little, and depending on the condition, could make it more readable and easier to understand. Remember, plang is about transfer understanding of logic, so use your best judgement when choosing a keyword, keeping in mind to make it as clear as possible.
+	
+	p.span.codeinline IF NOT angular_velocity LESSTHAN 100 OR angular_velocity MORETHAN 200
+	br
+	p.span.codeinline UNLESS angular_velocity LESSTHAN 100 OR angular_velocity MORETHAN 200
+	p Both of these statements will result to 'true' when the angular_velocity is between 100 and 200.
+	
+	+boxlabelwarning()
+		|It is strongly recommended to avoid NOT negation as much as possible.
+		
+	h4 Comparator Options
+	p A comparator can be any one of the following.
+	ul
+		li
+			.span.codeinline EQUALTO
+		li
+			.span.codeinline MORETHAN
+		li
+			.span.codeinline LESSTHAN
+		li
+			.span.codeinline MORETHAN_OR_EQUALTO
+		li
+			.span.codeinline LESSTHAN_OR_EQUALTO
+
+	h4 Conditional Block
+	p The conditional block is what is executed depending on the condition statement.
+	p An #[span.codeinline  IF] type block can be followed by an #[span.codeinline  ELSE] or an #[span.codeinline  ELSEIF].
+	
+	+codeblock('If / Else Statement', 'Plang')
+		|IF angular_velocity LESSTHAN 100
+		|	DO Something
+		|ELSEIF angular_velocity MORETHAN 200
+		|	DO Something2
+		|ELSE
+		|	DO Something3
+	
+	p The conditional block can have any one of the following types.
+	ul
+		li
+			span.codeinline IF
+		li
+			span.codeinline WHILE
+			
+	h4 Loops
+	p Loops are an important part of any logic structure. The 'while' loop will execute repeatedly until the condition is false.
+	
+	

@@ -1,0 +1,94 @@
+extends ../layout
+
+block theme
+	link(rel='stylesheet', href='/stylesheets/style_theme_basic.css')
+
+block content
+	h2 Specification - Variables
+	p Variables can be declared as follows.
+	
+	+codeblock('Variables', 'Plang')
+		|VAR angular_velocity
+		|
+		|VAR Number angular_velocity
+		|
+		|VAR angular_velocity = 15
+		|
+		|VAR Number angular_velocity = 18
+	
+	h4 Order of Declaration
+	p Variables do not need to be declared before being used. In fact they do not need to be declared at all. Variable declarations are purely to add clarity to the usage of data.
+	
+	h4 Types
+	p As mentioned, types do not need to be specified when declaring variables, however there is a convention for types and their naming.
+	p If declared, the type must be specified after the #[span.codeinline  VAR] keyword, and must start with a capital letter. Types can be parent types or subtypes. Subtypes are just a more specific variation of the parent type.
+	
+	table
+		tr
+			th Type
+			th SubTypes
+		tr
+			td Byte
+			td Char
+		tr
+			td Number
+			td Int , Float , Double
+		tr
+			td String
+			td  
+		
+	h4 Names
+	p Variable names appear either after the #[span.codeinline VAR] keyword, or after the 'type' name. Variable names must start with a lower-case letter and words are separated with an underscore.
+	p Camel casing can not be used for variable names.
+	
+	h4 Arrays
+	p Arrays are defined with '[' and ']' operators. The following is an example of a Number array. Note that the spaces around the numbers are not optional and will throw a validation error if not present. This follows the philosophy of strict syntactic rules to ensure human readability. The spaces are required regardless of the type of data.
+	
+	+codeblock('Arrays', 'Plang')
+		|VAR entity_ids = [ 55 , 78 , 91 ]
+		
+	h4 Objects
+	p Objects can be created inline if needed. This is the simplest way to define an object for use throughout the snippet.
+	
+	+codeblock('Objects', 'Plang')
+		|# Declare Var as new Type
+		|VAR Node my_node WHERE
+		|	node_id = 56
+		|	node_child_left = other_node1
+		|	node_child_right = other_node2
+			
+	p Types can also be declared ahead of time to make object instances more clear.
+	
+	+codeblock('Type Declaration', 'Plang')
+		|# Declare Type
+		|TYPE Node
+		|	VAR Number node_id
+		|	VAR Node node_child_left
+		|	VAR Node node_child_right
+		|
+		|# Use Type
+		|VAR Node my_node WHERE
+		|	node_id = 56
+		|	node_child_left = other_node1
+		|	node_child_right = other_node2
+		
+	p Note that the variable declaration is identical, whether the type was declared or not. This is because the type declaration, like most things in plang, is purely semantic, and to increase clarity and understanding.
+			
+	h4 Assignments
+	p The following block is an example of different types of data that can be assigned to variables.
+	
+	+codeblock('Variable Assignments', 'Plang')
+		|# Byte
+		|VAR Byte instruction1 = BITS 00101101
+		|VAR Byte instruction2 = HEX 9F
+		|VAR Byte instruction3 = CHAR P
+		|
+		|# Number
+		|VAR Number speed = 15
+		|
+		|# String
+		|VAR String middle_names = "Laura Zoe" 
+			
+	p It is important to note, the validator does not check for type compatibility. The validator will let through #[span.codeinline  VAR Number my_number = "The big cow in the field."], even though this is clearly incorrect. This is done because plang does not want to enforce any type behavior, since type behavior can vary between languages. It needs to be remembered that plang's objective is to <b>describe</b> logic, not to define how it is interpreted.
+		
+	

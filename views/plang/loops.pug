@@ -1,0 +1,25 @@
+extends ../layout
+
+block theme
+	link(rel='stylesheet', href='/stylesheets/style_theme_basic.css')
+
+block content
+	h2 Specification - Loops
+	p Loops are an important part of any logic structure. The 'while' loop will execute repeatedly until the condition is false.
+	
+	+codeblock('Loops', 'Plang')
+		|WHILE angular_velocity LESSTHAN 100
+		|	DO Calculation
+		|
+		|FOREACH node IN nodes
+		|	DO PingNode WHERE node = node
+		|
+		|FOR index = 0 index LESSTHAN 10 index++
+		|	DO Print WHERE value = index
+		|
+		|REPEAT 6 TIMES
+		|	DO Print WHERE value = "Hello World!"
+		
+	p Most of the loops should seem pretty clear, as they follow the same pattern from many other languages, however the #[span.codeinline  REPEAT] loop may look new. #[span.codeinline  REPEAT] can be used like a traditional 'for' loop, but when the index is not required. This dramatically simplifies the reading. If the index is required, #[span.codeinline  REPEAT] can still be used, and an undeclared variable 'index' can be used to denote the index. However, if the indexing is more complicated than a simple incremental index, then it is recommended to use a traditional 'for' loop for use case clarity.
+	
+	

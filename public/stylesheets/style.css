@@ -101,11 +101,33 @@ tr:nth-child(odd) {
 }
 
 img {
+	padding: 3em;
     display: block;
     margin: 0 auto;
 }
 
 /* Features */
+
+.warning {
+	width: 100%;
+	padding: 1.5em;
+	padding-top: 3em;
+	padding-left: 3em;
+	box-sizing: border-box;
+	font-family: monospace;
+	background-color: rgb(193, 80, 69);
+	border: solid 1px rgb(117, 34, 26);
+	color: rgb(245, 245, 245);
+}
+.boxlabelwarning {
+	float: left;
+	margin-top: -1.75em;
+	margin-left: -1.25em;
+	color: rgb(245, 245, 245);
+	font-size: 1.5em;
+	font-family: monospace;
+	font-weight: bold;
+}
 
 .codeblock {
 	width: 100%;
@@ -165,5 +187,9 @@ img {
 }
 
 .code_number {
+	color: rgb(190, 62, 50);
+}
+
+.code_string {
 	color: rgb(190, 62, 50);
 }

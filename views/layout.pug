@@ -5,6 +5,11 @@ mixin codeblock(title, type)
 		.codeblocktitle= title
 		.codeblocktype= type
 		block
+			
+mixin boxlabelwarning()
+	.warning
+		.boxlabelwarning Warning
+		block
 
 html
 	head
@@ -28,6 +33,10 @@ html
 				a(href='/plang/parser') Parser
 			.navHeading Specification
 			.navLink
-				a(href='/plang/blocks') Blocks
+				a(href='/plang/variables') Variables
+			.navLink
+				a(href='/plang/conditionals') Conditionals
+			.navLink
+				a(href='/plang/loops') Loops
 		.contentContainer
 			block content

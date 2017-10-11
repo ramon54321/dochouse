@@ -7,6 +7,20 @@ block content
 	h1 #{title}
 	p Welcome to Plang's documentation.
 	p Plang is a specification for pseudo code. The idea is to standardize pseudo code to a set of very strict rules. This will ensure algorithms and logic patterns can be created in a simple, easy to read and understand language, which abstracts away the intricacies of runnable languages, but still conforms to a norm, meaning you know what to expect when you ask for a #[a(href='/plang').inlineLink plang] file.
+	p Since plang's intention is to describe an algorithm or logical flow, plang files are intended to be quite short, and in the form of snippets, rather than a full multi file project, however there is no reason why it cannot be used to build an entire project.
+	
+	h4 Design Philosophy
+	p Plang's design follows a strict set of guidelines. This is to ensure that there is no stray from the objective the language is trying to achieve.
+	
+	ol
+		li 
+			h5 Simplicity
+			p The number one rule for all design aspects of Plang is simplicity. The language must be easy to use, easy to understand, and easy to learn.
+		li
+			h5 Readability
+			p Following from rule one, readability is the most crucial aspect when determining how the language grammar should be structured. This includes where spaces are enforced, which is done in order to help separate various tokens of interest in a line.
+	
+	
 	h4 Code Extract	
 	
 	+codeblock('Basic Example', 'Plang')

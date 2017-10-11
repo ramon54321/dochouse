@@ -1,9 +1,17 @@
 doctype html
 
+mixin codeblock(title, type)
+	.codeblock
+		.codeblocktitle= title
+		.codeblocktype= type
+		block
+
 html
 	head
 		title= title
 		link(rel='stylesheet', href='/stylesheets/style.css')
+		script(src='https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js')
+		script(src='/javascripts/highlight.js')
 		block theme
 
 	body

@@ -7,7 +7,59 @@ block content
 	h1 #{title}
 	p Welcome to Plang's documentation.
 	p Plang is a specification for pseudo code. The idea is to standardize pseudo code to a set of very strict rules. This will ensure algorithms and logic patterns can be created in a simple, easy to read and understand language, which abstracts away the intricacies of runnable languages, but still conforms to a norm, meaning you know what to expect when you ask for a #[a(href='/plang').inlineLink plang] file.
-	.codeblock
-		| function (level) {
-		| 	increase(4);
-		| }
+	h4 Code Extract	
+	
+	+codeblock('Basic Example', 'Plang')
+		|VAR running_speed = 55
+		|
+		|IF running_speed MORETHAN 30
+		|	DO ReduceEnergy WHERE depletion = 4
+		|
+		|FUNCTION ReduceEnergy
+		|	PARAM depletion
+		|	
+		|	energy = energy - depletion
+		
+	p Plang tries to force the code to read as close to English as possible, while still maintaining a familiar, common order, which will allow programmers of C, C# and Java to feel right at home.
+	p In an attempt to simplify the code as much as possible, plang abstracts many common requirements of many languages, such as types, pointers and even in some instances, declarations.
+	p As an example, variables generally do not have a type defined, even though they can, if desired.
+	p.span.codeinline VAR maximum_velocity
+	p Here the variable is declared with only a name. This can very often be enough to understand the rest of the logic. It is of utmost importance to remember, the idea of plang is not to define exact computational behavior, but rather define an algorithm, or logical flow of process, therefore, some ambiguity can be acceptable in most cases, especially if it is a non-essential detail, which has no effect on the understanding of the logic.
+	p.span.codeinline VAR Number maximum_velocity
+	br
+	p.span.codeinline VAR maximum_velocity = 44
+	br
+	p.span.codeinline VAR Number maximum_velocity = 44
+	p Variable declarations can have a type or value optionally assigned. This is just one example of how plang tries to abstract away any unneeded details, in order to focus on the human understanding of the logic.
+	
+	h4 Web Integration
+	p Plang is currently in development, however, future plans are to integrate plang into the browser, so snippets can be validated on the fly. This can be extremely useful on forums and post boards, where code and logic is often shared.
+		
+	h4 Software Overview
+	p The validator takes an input file as an argument, lexes, parses and then validates it. The diagram below illustrates the flow of data.
+	
+	img(src='https://github.com/P-lang/p-lang-compiler/blob/master/docs/images/flow.png?raw=true')
+			
+	h4 Version Details
+	table
+		tr
+			th Version
+			th Lex
+			th Parse
+			th Validate
+			th Compile
+		tr
+			td 0.1.0
+			td Yes
+			td No
+			td No
+			td No
+		tr
+			td 0.2.0
+			td Yes
+			td Yes
+			td Yes
+			td No
+			
+		
+	

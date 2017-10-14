@@ -1,0 +1,118 @@
+extends ../layout
+
+block theme
+	link(rel='stylesheet', href='/stylesheets/style_theme_basic.css')
+
+block content
+	h2 Development - Grammar
+	
+	p The grammar defines how the parser breaks down the token stream. Let's start by defining an expression. Once we can parse an expression, we can simply use the entire expression as a child of any further grammatical rules.
+	
+	h4 Expression
+	
+	p The idea of the expression is to result in a single numerical value. This means that regardless of the children of an expression, it must reduce to a number. Knowing that, we can replace any future numbers, with an expression if needed.
+	
+	p Expressions must be able to handle most numeric calculations, such as addition, subtraction, multiplication and division. We also want to ensure we can use brackets to express the order of operations.
+	
+	P We need to keep association and recursion in mind. In order to avoid an infinite loop, the first match in each production of a rule can not be the same as the rule.
+	
+	+codeblock('Grammar', 'Plang')
+		|    E   ->    E + num | T
+			
+	p This will cause E to always fall into an infinite loop, because it will keep checking itself over and over again.
+	p This problem can be solved by changing the order, while maintaining the same yield. 'e' is epsilon, and indicates the empty string "".
+	
+	+codeblock('Grammar', 'Plang')
+		|    E   ->    T E'
+		|    E'  ->    + num E' | ε 
+		
+	p This does however complicate the grammar considerably, however we should be able to write our grammar with left-recursion and then convert the grammar after we have designed it.
+	p Let us consider an example expression we want to parse, and try to deduce a grammar for it. Bear in mind, initially we will ignore spaces.
+	
+	+codeblock('Grammar', 'Plang')
+		|# 4 + 2
+		|
+		|    E   ->    num + num
+		
+	p This may be very limiting, but nonetheless, it is entirely valid. The grammar will enforce all expressions to match only number plus number. Let us extend it slightly to also allow subtraction.
+	
+	+codeblock('Grammar', 'Plang')
+		|# 7 - 1
+		|
+		|    E   ->    num + num | num - num
+		
+	p Let's see if we can extend it a little to allow concatenation of addition and subtraction.
+	p It is important to understand that the - and + operators are left associative, meaning they must be left recursive. This is to say the tree must grow leftwards. This will cause the left most occurrence of the operation to be the lowest on the tree, meaning it gets computed before the parent.
+		
+	+codeblock('Grammar', 'Plang')
+		|# 7 - 1 + 4
+		|
+		|            E
+		|           /|\
+		|          E + 4
+		|         /|\
+		|        E - 1
+		|       /
+		|      7
+		|
+		|    E   ->    E + num | E - num | num
+		
+	p The grammar here is correct, however, it is ambiguous, because the same rules can be used, but produce a different tree. The second problem is that we do not know which production choice to apply to ensure we build the tree correctly. In other words, we will infinitely loop into E, unless we decide to use the last production instead.
+	p We can solve this by eliminating left recursion with the following formula. The key aspect to note here, is that the rule still derives from the left recursive rule, meaning the behavior does not change, it simply removes the ambiguity.
+	p It is important to note left recursion can only be removed if the rule had some sort of escape option to begin with, in our case 'num'.
+	p We have seen this formula earlier on the page, but now we look at it in a more concrete example.
+	
+	+formulablock('Left Recursion')
+		|Left recursive rule - Note β is the possible escape option
+		|    A   ->    A α | β
+		|    
+		|Same rule with no left recursion - Note the escape check
+		|    A   ->    β A'
+		|    A'  ->    α A' | ε
+		
+	p The 'ε' represents an empty string, meaning #[span.codeinline  A'] can go to #[span.codeinline  α A'], or simply nothing.
+	p Let's try to apply the formula to our rules.
+		
+	+codeblock('Grammar', 'Plang')
+		|# 7 - 1 + 4
+		|
+		|            E
+		|           /|
+		|          7 E'
+		|           /|\
+		|          - 1 E'
+		|             /|\
+		|            + 4 E'
+		|               /
+		|              ε
+		|
+		|    E   ->    num E'
+		|    E'  ->    + num E' | - num E' | ε
+		
+	p We can see here we have managed to avoid left recursion by having the first check in the production be a terminal, working like a conditional check.
+	p Now we need to add multiplication and division. Both of these are also left associative, so we will run into a similar problem as before, however there is an additional step to consider. Multiplication and division need to occur before addition and subtraction, therefore they need to be lower on the tree. In order to create this we will drop them down a level in the grammar rules.
+	
+	+codeblock('Grammar', 'Plang')
+		|# 6 + 2 * 2
+		|
+		|            --- E
+		|          /     |
+		|         /      |
+		|        T     - E'----
+		|       /    /   |      \
+		|      6    +    T       E'
+		|               /|      /
+		|              2 T'    ε
+		|               /|\ 
+		|              * 2 T'
+		|                   \
+		|                    ε
+		|
+		|    E   ->    T E' | T
+		|    E'  ->    + T E' | - T E' | ε
+		|    T   ->    num T' | num
+		|    T'  ->    * num T' | / num T' | ε
+		
+	p This is a little more complex, but in essence, the same rules were followed as with addition and subtraction, however at any point where there was a 'num', it has been replaced with a 'T'. This 'T' includes a normal 'num', but also includes the option for multiplication and division just like the 'E' did for addition and subtraction.
+	p We also added the option for a 'E' to go straight to a 'T', in the case there is no addition or subtraction, and also added the option of going straight to 'num' from 'T', in case there is no multiplication or division, but still a 'num'.
+	p Note how the last prime for each non-terminal, E' and T', are terminated with an 'ε'.

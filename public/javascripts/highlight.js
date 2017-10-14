@@ -12,8 +12,8 @@ function HighlightCode(block){
 
 	html = html.replace(/(\s\"[a-zA-Z0-9]*[a-zA-Z0-9 \.\!\?]*\")/g, "<span class='code_string'>" + "$1" + "</span>");
 
-	var keywords = ["VAR", "TYPE", "PARAM", "NOT", "UNLESS", "IF", "ELSE", "ELSEIF", "WHILE", "MORETHAN"
-					, "LESSTHAN", "MORETHAN_OR_EQUALTO", "LESSTHAN_OR_EQUALTO", "EQUALTO", "OR", "AND", "DO", "FUNCTION", "WHILE", "WHERE", "TRUE", "FALSE", "FOR", "FOREACH", "IN", "REPEAT", "TIMES"];
+	var keywords = ["VAR", "TYPE", "DELETE", "PARAM", "NOT", "UNLESS", "IF", "ELSE", "ELSEIF", "WHILE", "MORETHAN"
+					, "LESSTHAN", "MORETHAN_OR_EQUALTO", "LESSTHAN_OR_EQUALTO", "EQUALTO", "OR", "AND", "DO", "FUNCTION", "RETURN", "WHILE", "WHERE", "TRUE", "FALSE", "FOR", "FOREACH", "IN", "REPEAT", "TIMES"];
 	keywords.forEach((keyword) => {
 			html = html.replace(new RegExp("\\b" + keyword + "\\b","g"), "<span class='code_keyword'>" + keyword + "</span>");
 	});

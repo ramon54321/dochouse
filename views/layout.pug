@@ -6,6 +6,11 @@ mixin codeblock(title, type)
 		.codeblocktype= type
 		block
 			
+mixin formulablock(title)
+	.formulablock
+		.codeblocktitle= title
+		block
+			
 mixin boxlabelwarning()
 	.warning
 		.boxlabelwarning Warning
@@ -31,6 +36,9 @@ html
 				a(href='/plang/lexer') Lexer
 			.navLink 
 				a(href='/plang/parser') Parser
+			.navHeading Development
+			.navLink 
+				a(href='/plang/grammardevelopment') Grammar
 			.navHeading Specification
 			.navLink
 				a(href='/plang/variables') Variables

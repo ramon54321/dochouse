@@ -145,6 +145,22 @@ img {
 	color: #696969;
 }
 
+.formulablock {
+	width: 100%;
+	padding: 1.5em;
+	padding-left: 3em;
+	padding-right: 3em;
+	padding-top: 3em;
+	box-sizing: border-box;
+	margin-top: 2em;
+	margin-bottom: 2em;
+	font-family: monospace;
+	background-color: rgb(231, 231, 231);
+	border: solid 1px rgb(199, 199, 199);
+	white-space: pre;
+	color: #696969;
+}
+
 .codeblocktitle {
 	float: left;
 	margin-top: -2em;

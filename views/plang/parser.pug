@@ -1,0 +1,185 @@
+extends ../layout
+
+block theme
+	link(rel='stylesheet', href='/stylesheets/style_theme_basic.css')
+
+block content
+	h2 Introduction - Parser
+	
+	p We will use a plang snippet to describe how plang's parser works, pretty cool eh?
+	
+	+codeblock('Parser Algorithm', 'Plang')
+		|# Example Grammar
+		|#    E   ->    T + E  |  T
+		|#    T   ->   num * T | num | ( E )
+		|
+		|# Declare Node Type
+		|TYPE Node
+		|	VAR Node 	node_child_left
+		|	VAR Node 	node_child_center
+		|	VAR Node 	node_child_right
+		|	VAR String 	value
+		|
+		|# Keep track of current token
+		|VAR current_token
+		
+	p We will start with the terminal 'num'. It will be the simplest, and then build up from there. The first step is to define a match function for 'num'.
+	
+	+codeblock('Parser Algorithm', 'Plang')
+		|# Match should return node if match is true
+		|FUNCTION Match_Terminal_num
+		|	IF current_token EQUALTO num
+		|		VAR Node new_node
+		|		new_node.value = current_token.value
+		|		current_token++
+		|		RETURN new_node
+		|	ELSE
+		|		RETURN NULL
+		
+	p Now we do the same for the other terminals.
+	
+	+codeblock('Parser Algorithm', 'Plang')
+		|FUNCTION Match_Terminal_plus
+		|	IF current_token EQUALTO plus
+		|		VAR Node new_node
+		|		new_node.value = plus
+		|		current_token++
+		|		RETURN new_node
+		|	ELSE
+		|		RETURN NULL
+		|
+		|FUNCTION Match_Terminal_multiply
+		|	IF current_token EQUALTO multiply
+		|		VAR Node new_node
+		|		new_node.value = multiply
+		|		current_token++
+		|		RETURN new_node
+		|	ELSE
+		|		RETURN NULL
+		|
+		|FUNCTION Match_Terminal_left_brace
+		|	IF current_token EQUALTO left_brace
+		|		VAR Node new_node
+		|		new_node.value = left_brace
+		|		current_token++
+		|		RETURN new_node
+		|	ELSE
+		|		RETURN NULL
+		|
+		|FUNCTION Match_Terminal_right_brace
+		|	IF current_token EQUALTO right_brace
+		|		VAR Node new_node
+		|		new_node.value = right_brace
+		|		current_token++
+		|		RETURN new_node
+		|	ELSE
+		|		RETURN NULL
+		
+	p Now that we have the terminals, we can move to our first non-terminal match, 'T'.
+	
+	+codeblock('Parser Algorithm', 'Plang')
+		|# Match should return node if match is true
+		|FUNCTION Match_T
+		|	# Try each production until a match is found
+		|	VAR Node t1 = DO Match_T1
+		|	UNLESS t1 EQUALTO NULL
+		|		RETURN t1
+		|
+		|	VAR Node t2 = DO Match_T2
+		|	UNLESS t2 EQUALTO NULL
+		|		RETURN t2
+		|		
+		|	VAR Node t3 = DO Match_T3
+		|	UNLESS t3 EQUALTO NULL
+		|		RETURN t3
+		|	
+		|	# No Match found
+		|	RETURN NULL
+		|	
+		|FUNCTION Match_T1
+		|	VAR start_token = current_token
+		|
+		|	VAR Node num = DO Match_Terminal_num
+		|	IF num EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|
+		|	VAR Node multiply = DO Match_Terminal_multiply
+		|	IF multiply EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|	
+		|	VAR Node t = DO Match_T
+		|	IF t EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|
+		|	Node new_node
+		|	new_node.value = "T1"
+		|	new_node.node_child_left = num
+		|	new_node.node_child_center = multiply
+		|	new_node.node_child_right = t
+		|	RETURN new_node
+		|	
+		|FUNCTION Match_T2
+		|	VAR start_token = current_token
+		|
+		|	VAR Node num = DO Match_Terminal_num
+		|	IF num EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|
+		|	Node new_node
+		|	new_node.value = "T2"
+		|	new_node.node_child_left = num
+		|	RETURN new_node
+		|	
+		|FUNCTION Match_T3
+		|	VAR start_token = current_token
+		|
+		|	VAR Node lbrace = DO Match_Terminal_left_brace
+		|	IF num EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|
+		|	VAR Node e = DO Match_E
+		|	IF multiply EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|	
+		|	VAR Node rbrace = DO Match_Terminal_right_brace
+		|	IF t EQUALTO NULL
+		|		current_token = start_token
+		|		RETURN NULL
+		|
+		|	Node new_node
+		|	new_node.value = "T3"
+		|	new_node.node_child_left = lbrace
+		|	new_node.node_child_center = e
+		|	new_node.node_child_right = rbrace
+		|	RETURN new_node
+	
+	p We do use a utility function here in order to make sure we clean up in the event the match failed. The function is defined as follows.
+	p This specific utility function can be implemented in the destructor of a node itself in C++. That way delete can be called at any point on any node and the entire subtree will be deleted.
+	
+	+codeblock('Parser Algorithm', 'Plang')
+		|# Recursively delete entire node tree below node
+		|FUNCTION DeleteNode
+		|	PARAM node
+		|	
+		|	IF node EQUALTO NULL
+		|		RETURN
+		|
+		|	UNLESS node.node_child_left EQUALTO NULL
+		|		DO DeleteNode WHERE node = node.node_child_left
+		|
+		|	UNLESS node.node_child_center EQUALTO NULL
+		|		DO DeleteNode WHERE node = node.node_child_center
+		|
+		|	UNLESS node.node_child_right EQUALTO NULL
+		|		DO DeleteNode WHERE node = node.node_child_right
+
+	p It is important to note that the nodes only get created in the terminal match functions and the individual R.H.S production functions, and not the non-terminal matches themselves.
+	p This recursive descent method of parsing is quite robust, and using the specific implementation described above, very modular.
+	p The remainder of the grammar can be implemented in exactly the same manner. The final result is a root node with the entire syntax tree as children. The initial parse function needs to ensure that when the start node match is complete, the end of the file is also reached, to ensure it did not just parse part of the file.
+	
